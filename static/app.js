@@ -25,14 +25,11 @@ document
       message: document.getElementById("message").value,
     };
 
-    let response = await fetch(
-      "https://saquib-hazari-lso6iknk6-saquibhusains-projects.vercel.app",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      }
-    );
+    let response = await fetch("http://127.0.0.1:5000/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
 
     let result = await response.json();
 
