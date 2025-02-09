@@ -4,7 +4,11 @@ import os
 
 app = Flask(__name__)
 
+# Use Environment Variable for the Database
 DATABASE_URL = os.getenv("postgresql://postgres:2178@localhost:5432/contact")
+if not DATABASE_URL:
+    raise ValueError("❌ DATABASE_URL not set in environment variables!")
+
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -28,12 +32,17 @@ def submit():
     if not name or not email or not message:
         return jsonify({"error": "All fields are required!"}), 400
 
-    new_entry = Contact(name=name, email=email, message=message)
-    db.session.add(new_entry)
-    db.session.commit()
+    try:
+        new_entry = Contact(name=name, email=email, message=message)
+        db.session.add(new_entry)
+        db.session.commit()
+        return jsonify({"message": "Data saved successfully!"}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        db.session.close()
 
-    return jsonify({"message": "Data saved successfully!"}), 201
-
-# Vercel requires this
-from flask_lambda import FlaskLambda
-app = FlaskLambda(app)
+# Vercel requires a named handler
+def handler(event, context):
+    return app(event, context)
