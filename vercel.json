@@ -1,9 +1,4 @@
 {
   "version": 2,
-  "routes": [{ "src": "/(.*)", "dest": "app.py" }],
-  "build": {
-    "env": {
-      "PYTHON_VERSION": "3.9"
-    }
-  }
+  "routes": [{ "src": "/(.*)", "dest": "app.py" }]
 }
