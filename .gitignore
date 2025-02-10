@@ -1,0 +1,5 @@
+/.vercel
+/.vscode
+/.env
+/contacts.session.sql
+/__pycache__
