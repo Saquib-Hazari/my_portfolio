@@ -3,3 +3,4 @@
 /.env
 /contacts.session.sql
 /__pycache__
+/venv
